@@ -1,6 +1,7 @@
 package com.ppmtoolfullstack.ppmt.web;
 
 import com.ppmtoolfullstack.ppmt.Domain.Project;
+import com.ppmtoolfullstack.ppmt.services.ErrorValidationHandlerService;
 import com.ppmtoolfullstack.ppmt.services.ProjectService;
 
 import java.util.HashMap;
@@ -28,17 +29,15 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
+    @Autowired
+    ErrorValidationHandlerService errorValidationHandlerService;
+    
     @PostMapping("")
     private ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
     	
-    	if(result.hasErrors()) {
-    		Map<String, String> errorMap = new HashMap<>();
-    		for (FieldError error : result.getFieldErrors()) {
-    			errorMap.put(error.getField(), error.getDefaultMessage());
-			}
-    		return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
-    	}
-    		
+    	ResponseEntity<?> errorMap = errorValidationHandlerService.ErrorValidationHandler(result);
+    	
+    	if(errorMap != null) return errorMap;
     	
     	projectService.saveOrUpdateProject(project);
     	return new ResponseEntity<Project>(project,HttpStatus.CREATED);
