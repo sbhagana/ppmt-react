@@ -1,5 +1,7 @@
 package com.ppmtoolfullstack.ppmt.exceptions;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,4 +20,9 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return new ResponseEntity<Object>(projectIdExceptionresponse, HttpStatus.BAD_REQUEST);
 	}
 
+	
+	/*@ExceptionHandler(Exception.class)
+	public final String CustomExceptionHandler(HttpServletRequest req , Exception ex) {
+		return "This is a custom exception";
+	}*/
 }

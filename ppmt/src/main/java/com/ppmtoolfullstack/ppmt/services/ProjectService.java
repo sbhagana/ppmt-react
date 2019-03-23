@@ -19,9 +19,10 @@ public class ProjectService {
 
 	public Project saveOrUpdateProject(@Valid Project project) {
 		try {
+			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 			return projectRepository.save(project);
 		} catch (Exception e) {
-			throw new ProjectIdException("This is a duplicate Project Identifier");
+			throw new ProjectIdException("Project ID: " + project.getProjectIdentifier().toUpperCase() + " already exists");
 		}
 	}
 
