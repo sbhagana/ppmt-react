@@ -1,14 +1,18 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createProject } from "./../actions/ProjectActions";
 
 class AddProject extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       projectName: "",
       projectIdentifier: "",
       description: "",
       start_date: "",
-      end_date: ""
+      end_date: "",
+      errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
@@ -18,7 +22,9 @@ class AddProject extends Component {
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
+  componentWillReceiveProps(nextProps) {
+    this.setState({ errors: nextProps.errors });
+  }
   onSubmit(e) {
     e.preventDefault();
     const newProject = {
@@ -28,9 +34,11 @@ class AddProject extends Component {
       start_date: this.state.start_date,
       end_date: this.state.end_date
     };
-    console.log(newProject);
+    this.props.createProject(newProject, this.props.history);
   }
   render() {
+    const { errors } = this.state;
+    console.log("errors:", errors);
     return (
       <div>
         <div className="project">
@@ -51,6 +59,7 @@ class AddProject extends Component {
                       value={this.state.projectName}
                       onChange={this.onChange}
                     />
+                    <p>{errors.projectName}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -61,6 +70,7 @@ class AddProject extends Component {
                       value={this.state.projectIdentifier}
                       onChange={this.onChange}
                     />
+                    <p>{errors.projectIdentifier}</p>
                   </div>
                   <div className="form-group">
                     <textarea
@@ -70,6 +80,7 @@ class AddProject extends Component {
                       value={this.state.description}
                       onChange={this.onChange}
                     />
+                    <p>{errors.description}</p>
                   </div>
                   <h6>Start Date</h6>
                   <div className="form-group">
@@ -106,4 +117,15 @@ class AddProject extends Component {
   }
 }
 
-export default AddProject;
+AddProject.propTypes = {
+  createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapsPropsToState = state => ({
+  errors: state.errors
+});
+export default connect(
+  mapsPropsToState,
+  { createProject }
+)(AddProject);
