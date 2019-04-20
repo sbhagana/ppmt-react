@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { createProject } from "./../actions/ProjectActions";
+import { createProject } from "../../actions/projectActions";
 import classnames from "classnames";
-import { error } from "util";
+
 class AddProject extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
       projectName: "",
       projectIdentifier: "",
@@ -20,12 +21,17 @@ class AddProject extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  //life cycle hooks
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ errors: nextProps.errors });
-  }
+
   onSubmit(e) {
     e.preventDefault();
     const newProject = {
@@ -37,18 +43,17 @@ class AddProject extends Component {
     };
     this.props.createProject(newProject, this.props.history);
   }
+
   render() {
     const { errors } = this.state;
-    console.log("errors:", errors);
+
     return (
       <div>
         <div className="project">
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h5 className="display-4 text-center">
-                  Create / Edit Project form
-                </h5>
+                <h5 className="display-4 text-center">Create Project form</h5>
                 <hr />
                 <form onSubmit={this.onSubmit}>
                   <div className="form-group">
@@ -141,10 +146,11 @@ AddProject.propTypes = {
   errors: PropTypes.object.isRequired
 };
 
-const mapsPropsToState = state => ({
+const mapStateToProps = state => ({
   errors: state.errors
 });
+
 export default connect(
-  mapsPropsToState,
+  mapStateToProps,
   { createProject }
 )(AddProject);

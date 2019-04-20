@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import ProjectItem from "./../Project/ProjectItem";
-import CreateProjectButton from "./../Project/CreateProjectButton";
+import ProjectItem from "./Project/ProjectItem";
+import CreateProjectButton from "./Project/CreateProjectButton";
 import { connect } from "react-redux";
+import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
-import { getProjects } from "./../actions/ProjectActions.js";
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getProjects();
   }
-  componentWillReceiveProps(nextState) {
-    this.setState({ projects: nextState.projects });
-  }
+
   render() {
-    const projects = this.props.project.projects;
-    console.log("projects", projects);
+    const { projects } = this.props.project;
+
     return (
       <div className="projects">
         <div className="container">
@@ -22,17 +20,13 @@ class Dashboard extends Component {
             <div className="col-md-12">
               <h1 className="display-4 text-center">Projects</h1>
               <br />
-
-              {/* Add PRoject */}
               <CreateProjectButton />
 
               <br />
               <hr />
-
               {projects.map(project => (
                 <ProjectItem key={project.id} project={project} />
               ))}
-              {/* <!-- End of Project Item Component --> */}
             </div>
           </div>
         </div>
@@ -42,13 +36,14 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  getProjects: PropTypes.func.isRequired,
-  projects: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
+  getProjects: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   project: state.project
 });
+
 export default connect(
   mapStateToProps,
   { getProjects }

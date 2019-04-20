@@ -4,6 +4,7 @@ import com.ppmtoolfullstack.ppmt.Domain.Project;
 import com.ppmtoolfullstack.ppmt.services.ErrorValidationHandlerService;
 import com.ppmtoolfullstack.ppmt.services.ProjectService;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,37 +38,37 @@ public class ProjectController {
 	ErrorValidationHandlerService errorValidationHandlerService;
 
 	@PostMapping("")
-	private ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+	private ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
 		ResponseEntity<?> errorMap = errorValidationHandlerService.ErrorValidationHandler(result);
 
 		if (errorMap != null)
 			return errorMap;
 
-		projectService.saveOrUpdateProject(project);
+		projectService.saveOrUpdateProject(project,principal.getName());
 		return new ResponseEntity<Project>(project, HttpStatus.CREATED);
 
 	}
 
 	@GetMapping("{projectId}")
-	public Project findProjectByProjectId(@PathVariable String projectId) {
-		return projectService.findProjectByProjectIdentifier(projectId);
+	public Project findProjectByProjectId(@PathVariable String projectId,Principal principal) {
+		return projectService.findProjectByProjectIdentifier(projectId,principal.getName());
 	}
 
 	@GetMapping("/all")
-	public Iterable<Project> findAllProjects() {
-		return projectService.findAllProjects();
+	public Iterable<Project> findAllProjects(Principal principal) {
+		return projectService.findAllProjects(principal.getName());
 	}
 	
 	@DeleteMapping("{projectId}")
-	public ResponseEntity<?> deleteByProjectId(@PathVariable String projectId) {
-		projectService.deleteByProjectId(projectId);
+	public ResponseEntity<?> deleteByProjectId(@PathVariable String projectId, Principal principal) {
+		projectService.deleteByProjectId(projectId,principal.getName());
 		return new ResponseEntity<String>("Project deleted successfully",HttpStatus.OK);
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> updateExistingProject(@RequestBody Project project) {
-		 projectService.updateProject(project);
+	public ResponseEntity<?> updateExistingProject(@RequestBody Project project,Principal principal) {
+		 projectService.saveOrUpdateProject(project, principal.getName());
 		
 		return new ResponseEntity<String>("Project Updated Successfully",HttpStatus.OK);
 	}
