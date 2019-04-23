@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
 class Header extends Component {
   render() {
     return (
@@ -8,7 +9,6 @@ class Header extends Component {
           <Link className="navbar-brand" to="/">
             Personal Project Management Tool
           </Link>
-
           <button
             className="navbar-toggler"
             type="button"

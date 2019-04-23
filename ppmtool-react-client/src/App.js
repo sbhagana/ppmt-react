@@ -14,6 +14,7 @@ import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProj
 import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
 import Login from "./components/UserManagement/Login";
+
 class App extends Component {
   render() {
     return (
@@ -21,7 +22,6 @@ class App extends Component {
         <Router>
           <div className="App">
             <Header />
-
             {
               //Public Routes
             }
@@ -29,6 +29,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+
             {
               //Private Routes
             }

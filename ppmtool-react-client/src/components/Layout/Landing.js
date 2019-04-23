@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
 class Landing extends Component {
   render() {
     return (
@@ -9,17 +10,16 @@ class Landing extends Component {
             <div className="row">
               <div className="col-md-12 text-center">
                 <h1 className="display-3 mb-4">
-                  Personal PRoject Management Tool
+                  Personal Project Management Tool
                 </h1>
                 <p className="lead">
-                  Create your account to join active projects or start you own
+                  Create your account to join active projects or start your own
                 </p>
                 <hr />
-
                 <Link className="btn btn-lg btn-primary mr-2" to="/register">
                   Sign Up
                 </Link>
-                <Link to="/login" className="btn btn-lg btn-secondary mr-2">
+                <Link className="btn btn-lg btn-secondary mr-2" to="/login">
                   Login
                 </Link>
               </div>
