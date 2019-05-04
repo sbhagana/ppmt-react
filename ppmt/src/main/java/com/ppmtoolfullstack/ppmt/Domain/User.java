@@ -23,10 +23,11 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User implements UserDetails{
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,14 +45,14 @@ public class User implements UserDetails{
 
 	@Transient
 	private String confirmPassword;
-
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date created_At;
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date updated_At;
 
-	@OneToMany(cascade=CascadeType.REFRESH, fetch=FetchType.EAGER, mappedBy="user", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
 	private List<Project> projects = new ArrayList<>();
-	
-	
+
 	/**
 	 * 
 	 */
@@ -167,7 +168,5 @@ public class User implements UserDetails{
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
-	
-	
 
 }

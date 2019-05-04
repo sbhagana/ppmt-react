@@ -16,6 +16,13 @@ class Login extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  componentDidMount() {
+    if (this.props.security.validToken) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -75,6 +82,15 @@ class Login extends Component {
                   {errors.password && (
                     <div className="invalid-feedback">{errors.password}</div>
                   )}
+                </div>
+                <div className="form-group">
+                  {JSON.stringify(errors) !== "{}" &&
+                    !errors.username &&
+                    !errors.password && (
+                      <div className="alert alert-danger">
+                        Something went wrong
+                      </div>
+                    )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
